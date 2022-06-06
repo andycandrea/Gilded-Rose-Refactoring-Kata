@@ -10,43 +10,57 @@ class GildedRose
     @quality = quality
   end
 
-  # rubocop:disable Metrics/PerceivedComplexity,Metrics/MethodLength
-  # rubocop:disable Metrics/CyclomaticComplexity,Metrics/AbcSize
   def tick
-    if @name != 'Aged Brie' && @name != 'Backstage passes to a TAFKAL80ETC concert'
-      if @quality > 0 && @name != 'Sulfuras, Hand of Ragnaros'
-        @quality -= 1
-      end
-    elsif @quality < 50
-      @quality += 1
-
-      if @name == 'Backstage passes to a TAFKAL80ETC concert'
-        if @days_remaining < 11 && @quality < 50
-          @quality += 1
-        end
-
-        if @days_remaining < 6 && @quality < 50
-          @quality += 1
-        end
-      end
-    end
-
-    if @name != 'Sulfuras, Hand of Ragnaros'
-      @days_remaining -= 1
-    end
-
-    if @days_remaining < 0
-      if @name != 'Aged Brie'
-        if @name == 'Backstage passes to a TAFKAL80ETC concert'
-          @quality = 0
-        elsif @quality > 0 && @name != 'Sulfuras, Hand of Ragnaros'
-          @quality -= 1
-        end
-      elsif @quality < 50
-        @quality += 1
-      end
+    case @name
+      when 'Sulfuras, Hand of Ragnaros'
+        tick_sulfuras
+      when 'Aged Brie'
+        tick_brie
+      when 'Backstage passes to a TAFKAL80ETC concert'
+        tick_backstage_passes
+      else
+        tick_normal
     end
   end
-  # rubocop:enable Metrics/PerceivedComplexity,Metrics/MethodLength
-  # rubocop:enable Metrics/CyclomaticComplexity,Metrics/AbcSize
+
+  private def tick_sulfuras
+  end
+
+  private def tick_brie
+    @days_remaining -= 1
+
+    return if @quality >= 50
+
+    @quality += 1
+    @quality += 1 if @days_remaining <= 0
+
+    ensure_bounded_quality
+  end
+
+  private def tick_backstage_passes
+    @days_remaining -= 1
+
+    return @quality = 0 if @days_remaining < 0
+
+    @quality += 1
+    @quality += 1 if @days_remaining < 10
+    @quality += 1 if @days_remaining < 5
+
+    ensure_bounded_quality
+  end
+
+  private def tick_normal
+    @days_remaining -= 1
+
+    return if @quality <= 0
+
+    @quality -= 1
+    @quality -= 1 if @days_remaining <= 0
+    ensure_bounded_quality
+  end
+
+  private def ensure_bounded_quality
+    @quality = 0 if @quality < 0
+    @quality = 50 if @quality > 50
+  end
 end
