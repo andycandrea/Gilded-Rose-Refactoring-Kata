@@ -1,39 +1,133 @@
+require:
+  - rubocop-performance
+  - rubocop-rspec
+
 AllCops:
-  TargetRubyVersion: 2.2
-
   Exclude:
-    - "bin/**/*"
-    - "spec/**/*"
-    - "lib/gilded_rose.rb"
+    - '**/bin/**/*'
+  NewCops: enable
+  TargetRubyVersion: 3.1
 
-Metrics/LineLength:
-  Max: 120
+Layout/CaseIndentation:
+  IndentOneStep: true
+Layout/ClassStructure:
+  Enabled: true
+Layout/EmptyLineAfterGuardClause:
+  Enabled: true
+Layout/EmptyLineAfterMultilineCondition:
+  Enabled: true
+Layout/FirstArrayElementLineBreak:
+  Enabled: true
+Layout/FirstHashElementLineBreak:
+  Enabled: true
+Layout/FirstMethodArgumentLineBreak:
+  Enabled: true
+Layout/FirstMethodParameterLineBreak:
+  Enabled: true
+Layout/LineEndStringConcatenationIndentation:
+  EnforcedStyle: indented
+Layout/MultilineArrayLineBreaks:
+  Enabled: true
+Layout/MultilineHashKeyLineBreaks:
+  Enabled: true
+Layout/MultilineMethodArgumentLineBreaks:
+  Enabled: true
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+Layout/MultilineOperationIndentation:
+  EnforcedStyle: indented
 
-# We like to use the hash rocket in rake files.
-Style/HashSyntax:
+# Disabled for specs to allow following pattern:
+# expect { Foo.create }.to change { Foo.count }
+Lint/AmbiguousBlockAssociation:
   Exclude:
-    - "Rakefile"
+    - '**/spec/**/*'
+Lint/NumberConversion:
+  Enabled: true
 
-# We will use double quotes everywhere.
-Style/StringLiterals:
-  EnforcedStyle: double_quotes
+Metrics/CyclomaticComplexity:
+  Max: 5
+Metrics/MethodLength:
+  Max: 15
+Metrics/PerceivedComplexity:
+  Max: 5
 
-# We are not going to optimize by freezing strings.
-Style/MutableConstant:
+Naming/VariableNumber:
+  EnforcedStyle: snake_case
+
+# We're preferring this from a stylistic point of view; it does not actually
+# impact performance
+Performance/ArraySemiInfiniteRangeSlice:
+  Enabled: true
+Performance/CaseWhenSplat:
+  Enabled: true
+Performance/IoReadlines:
+  Enabled: true
+
+RSpec/ContextWording:
+  Prefixes:
+    - as
+    - by
+    - when
+    - with
+    - without
+RSpec/DescribedClassModuleWrapping:
+  Enabled: true
+RSpec/EmptyLineAfterExample:
+  Enabled: false
+RSpec/ExpectChange:
+  EnforcedStyle: block
+RSpec/NamedSubject:
   Enabled: false
 
-# We are not going to distinguish between fail and raise.
-Style/SignalException:
-  Enabled: false
+Style/AccessModifierDeclarations:
+  EnforcedStyle: inline
+Style/ArrayCoercion:
+  Enabled: true
+Style/AutoResourceCleanup:
+  Enabled: true
+Style/ClassMethodsDefinitions:
+  Enabled: true
+Style/CollectionMethods:
+  Enabled: true
+Style/ConditionalAssignment:
+  EnforcedStyle: assign_inside_condition
+  IncludeTernaryExpressions: false
+Style/DateTime:
+  Enabled: true
+Style/EmptyMethod:
+  EnforcedStyle: expanded
+Style/ExponentialNotation:
+  EnforcedStyle: scientific
+Style/IpAddresses:
+  Enabled: true
+Style/Lambda:
+  EnforcedStyle: literal
+Style/MethodCallWithArgsParentheses:
+  Enabled: true
+  Exclude:
+    - '**/spec/**/*'
+Style/MultilineMethodSignature:
+  Enabled: true
+Style/OptionHash:
+  Enabled: true
+Style/RedundantBegin:
+  Enabled: true
+Style/RegexpLiteral:
+  AllowInnerSlashes: true
+Style/Send:
+  Enabled: true
+Style/StringMethods:
+  Enabled: true
+Style/TrailingCommaInBlockArgs:
+  Enabled: true
+Style/ZeroLengthPredicate:
+  Enabled: true
 
-# We are not going to line up parameters that span more than one line.
-Style/AlignParameters:
+# Specific for Gilded Rose
+Style/IfUnlessModifier:
   Enabled: false
-
-# We are okay with using extend self instead of module_function.
-Style/ModuleFunction:
+Style/GuardClause:
   Enabled: false
-
-# We are going to skip top-level class documentation for katas.
-Style/Documentation:
+Style/NumericPredicate:
   Enabled: false

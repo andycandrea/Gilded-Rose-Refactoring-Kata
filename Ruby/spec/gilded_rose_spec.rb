@@ -1,271 +1,433 @@
-require "spec_helper"
+# frozen_string_literal: true
 
-require_relative "../lib/gilded_rose"
+require 'spec_helper'
+
+require_relative '../lib/gilded_rose'
 
 RSpec.describe GildedRose do
-  context "Normal Item" do
-    it "before sell date" do
-      gilded_rose = GildedRose.new(name: "Normal Item", days_remaining: 5, quality: 10)
+  context 'with Normal Item' do
+    context 'when earlier than the sell date' do
+      subject do
+        described_class.new(name: 'Normal Item', days_remaining: 5, quality: 10)
+      end
 
-      gilded_rose.tick
-
-      expect(gilded_rose).to have_attributes(days_remaining: 4, quality: 9)
+      it 'decrements the days remaining' do
+        expect { subject.tick }.to change { subject.days_remaining }.by(-1)
+      end
+      it 'decrements the quality' do
+        expect { subject.tick }.to change { subject.quality }.by(-1)
+      end
     end
 
-    it "on sell date" do
-      gilded_rose = GildedRose.new(name: "Normal Item", days_remaining: 0, quality: 10)
+    context 'when on the sell date' do
+      subject do
+        described_class.new(name: 'Normal Item', days_remaining: 0, quality: 10)
+      end
 
-      gilded_rose.tick
-
-      expect(gilded_rose).to have_attributes(days_remaining: -1, quality: 8)
+      it 'decrements the days remaining' do
+        expect { subject.tick }.to change { subject.days_remaining }.by(-1)
+      end
+      it 'decreases the quality by 2' do
+        expect { subject.tick }.to change { subject.quality }.by(-2)
+      end
     end
 
-    it "after sell date" do
-      gilded_rose = GildedRose.new(name: "Normal Item", days_remaining: -10, quality: 10)
+    context 'when later than the sell date' do
+      subject do
+        described_class.new(name: 'Normal Item', days_remaining: -10, quality: 10)
+      end
 
-      gilded_rose.tick
-
-      expect(gilded_rose).to have_attributes(days_remaining: -11, quality: 8)
+      it 'decrements the days remaining' do
+        expect { subject.tick }.to change { subject.days_remaining }.by(-1)
+      end
+      it 'decreases the quality by 2' do
+        expect { subject.tick }.to change { subject.quality }.by(-2)
+      end
     end
 
-    it "of zero quality" do
-      gilded_rose = GildedRose.new(name: "Normal Item", days_remaining: 5, quality: 0)
+    context 'when quality is 0' do
+      subject do
+        described_class.new(name: 'Normal Item', days_remaining: 5, quality: 0)
+      end
 
-      gilded_rose.tick
-
-      expect(gilded_rose).to have_attributes(days_remaining: 4, quality: 0)
-    end
-  end
-
-  context "Aged Brie" do
-    it "before sell date" do
-      gilded_rose = GildedRose.new(name: "Aged Brie", days_remaining: 5, quality: 10)
-
-      gilded_rose.tick
-
-      expect(gilded_rose).to have_attributes(days_remaining: 4, quality: 11)
-    end
-
-    it "with max quality" do
-      gilded_rose = GildedRose.new(name: "Aged Brie", days_remaining: 5, quality: 50)
-
-      gilded_rose.tick
-
-      expect(gilded_rose).to have_attributes(days_remaining: 4, quality: 50)
-    end
-
-    it "on sell date" do
-      gilded_rose = GildedRose.new(name: "Aged Brie", days_remaining: 0, quality: 10)
-
-      gilded_rose.tick
-
-      expect(gilded_rose).to have_attributes(days_remaining: -1, quality: 12)
-    end
-
-    it "on sell date near max quality" do
-      gilded_rose = GildedRose.new(name: "Aged Brie", days_remaining: 0, quality: 49)
-
-      gilded_rose.tick
-
-      expect(gilded_rose).to have_attributes(days_remaining: -1, quality: 50)
-    end
-
-    it "on sell date with max quality" do
-      gilded_rose = GildedRose.new(name: "Aged Brie", days_remaining: 0, quality: 50)
-
-      gilded_rose.tick
-
-      expect(gilded_rose).to have_attributes(days_remaining: -1, quality: 50)
-    end
-
-    it "after sell date" do
-      gilded_rose = GildedRose.new(name: "Aged Brie", days_remaining: -10, quality: 10)
-
-      gilded_rose.tick
-
-      expect(gilded_rose).to have_attributes(days_remaining: -11, quality: 12)
-    end
-
-    it "after sell date with max quality" do
-      gilded_rose = GildedRose.new(name: "Aged Brie", days_remaining: -10, quality: 50)
-
-      gilded_rose.tick
-
-      expect(gilded_rose).to have_attributes(days_remaining: -11, quality: 50)
+      it 'decrements the days remaining' do
+        expect { subject.tick }.to change { subject.days_remaining }.by(-1)
+      end
+      it 'does not update the quality' do
+        expect { subject.tick }.not_to change { subject.quality }
+      end
     end
   end
 
-  context "Sulfuras" do
-    it "before sell date" do
-      gilded_rose = GildedRose.new(name: "Sulfuras, Hand of Ragnaros", days_remaining: 5, quality: 80)
+  context 'with Aged Brie' do
+    context 'when earlier than the sell date' do
+      subject do
+        described_class.new(name: 'Aged Brie', days_remaining: 5, quality: 10)
+      end
 
-      gilded_rose.tick
-
-      expect(gilded_rose).to have_attributes(days_remaining: 5, quality: 80)
+      it 'decrements the days remaining' do
+        expect { subject.tick }.to change { subject.days_remaining }.by(-1)
+      end
+      it 'increments the quality' do
+        expect { subject.tick }.to change { subject.quality }.by(1)
+      end
     end
 
-    it "on sell date" do
-      gilded_rose = GildedRose.new(name: "Sulfuras, Hand of Ragnaros", days_remaining: 0, quality: 80)
+    context 'when the quality is at the maximum' do
+      subject do
+        described_class.new(name: 'Aged Brie', days_remaining: 5, quality: 50)
+      end
 
-      gilded_rose.tick
-
-      expect(gilded_rose).to have_attributes(days_remaining: 0, quality: 80)
+      it 'decrements the days remaining' do
+        expect { subject.tick }.to change { subject.days_remaining }.by(-1)
+      end
+      it 'does not update the quality' do
+        expect { subject.tick }.not_to change { subject.quality }
+      end
     end
 
-    it "after sell date" do
-      gilded_rose = GildedRose.new(name: "Sulfuras, Hand of Ragnaros", days_remaining: -10, quality: 80)
+    context 'when on the sell date' do
+      subject do
+        described_class.new(name: 'Aged Brie', days_remaining: 0, quality: 10)
+      end
 
-      gilded_rose.tick
-
-      expect(gilded_rose).to have_attributes(days_remaining: -10, quality: 80)
-    end
-  end
-
-  context "Backstage Pass" do
-    it "long before sell date" do
-      gilded_rose = GildedRose.new(name: "Backstage passes to a TAFKAL80ETC concert", days_remaining: 11, quality: 10)
-
-      gilded_rose.tick
-
-      expect(gilded_rose).to have_attributes(days_remaining: 10, quality: 11)
+      it 'decrements the days remaining' do
+        expect { subject.tick }.to change { subject.days_remaining }.by(-1)
+      end
+      it 'increases the quality by 2' do
+        expect { subject.tick }.to change { subject.quality }.by(2)
+      end
     end
 
-    it "long before sell date at max quality" do
-      gilded_rose = GildedRose.new(name: "Backstage passes to a TAFKAL80ETC concert", days_remaining: 11, quality: 50)
+    context 'when on the sell date near max quality' do
+      subject do
+        described_class.new(name: 'Aged Brie', days_remaining: 0, quality: 49)
+      end
 
-      gilded_rose.tick
-
-      expect(gilded_rose).to have_attributes(days_remaining: 10, quality: 50)
+      it 'decrements the days remaining' do
+        expect { subject.tick }.to change { subject.days_remaining }.by(-1)
+      end
+      it 'increments the quality' do
+        expect { subject.tick }.to change { subject.quality }.by(1)
+      end
     end
 
-    it "medium close to sell date upper bound" do
-      gilded_rose = GildedRose.new(name: "Backstage passes to a TAFKAL80ETC concert", days_remaining: 10, quality: 10)
+    context 'when on the sell date with maximum quality' do
+      subject do
+        described_class.new(name: 'Aged Brie', days_remaining: 0, quality: 50)
+      end
 
-      gilded_rose.tick
-
-      expect(gilded_rose).to have_attributes(days_remaining: 9, quality: 12)
+      it 'decrements the days remaining' do
+        expect { subject.tick }.to change { subject.days_remaining }.by(-1)
+      end
+      it 'does not update the quality' do
+        expect { subject.tick }.not_to change { subject.quality }
+      end
     end
 
-    it "medium close to sell date upper bound at max quality" do
-      gilded_rose = GildedRose.new(name: "Backstage passes to a TAFKAL80ETC concert", days_remaining: 10, quality: 50)
+    context 'when later than the sell date' do
+      subject do
+        described_class.new(name: 'Aged Brie', days_remaining: -10, quality: 10)
+      end
 
-      gilded_rose.tick
-
-      expect(gilded_rose).to have_attributes(days_remaining: 9, quality: 50)
+      it 'decrements the days remaining' do
+        expect { subject.tick }.to change { subject.days_remaining }.by(-1)
+      end
+      it 'increases the quality by 2' do
+        expect { subject.tick }.to change { subject.quality }.by(2)
+      end
     end
 
-    it "medium close to sell date lower bound" do
-      gilded_rose = GildedRose.new(name: "Backstage passes to a TAFKAL80ETC concert", days_remaining: 6, quality: 10)
+    context 'when later than the sell date with maximum quality' do
+      subject do
+        described_class.new(name: 'Aged Brie', days_remaining: -10, quality: 50)
+      end
 
-      gilded_rose.tick
-
-      expect(gilded_rose).to have_attributes(days_remaining: 5, quality: 12)
-    end
-
-    it "medium close to sell date lower bound at max quality" do
-      gilded_rose = GildedRose.new(name: "Backstage passes to a TAFKAL80ETC concert", days_remaining: 6, quality: 50)
-
-      gilded_rose.tick
-
-      expect(gilded_rose).to have_attributes(days_remaining: 5, quality: 50)
-    end
-
-    it "very close to sell date upper bound" do
-      gilded_rose = GildedRose.new(name: "Backstage passes to a TAFKAL80ETC concert", days_remaining: 5, quality: 10)
-
-      gilded_rose.tick
-
-      expect(gilded_rose).to have_attributes(days_remaining: 4, quality: 13)
-    end
-
-    it "very close to sell date upper bound at max quality" do
-      gilded_rose = GildedRose.new(name: "Backstage passes to a TAFKAL80ETC concert", days_remaining: 5, quality: 50)
-
-      gilded_rose.tick
-
-      expect(gilded_rose).to have_attributes(days_remaining: 4, quality: 50)
-    end
-
-    it "very close to sell date lower bound" do
-      gilded_rose = GildedRose.new(name: "Backstage passes to a TAFKAL80ETC concert", days_remaining: 1, quality: 10)
-
-      gilded_rose.tick
-
-      expect(gilded_rose).to have_attributes(days_remaining: 0, quality: 13)
-    end
-
-    it "very close to sell date lower bound at max quality" do
-      gilded_rose = GildedRose.new(name: "Backstage passes to a TAFKAL80ETC concert", days_remaining: 1, quality: 50)
-
-      gilded_rose.tick
-
-      expect(gilded_rose).to have_attributes(days_remaining: 0, quality: 50)
-    end
-
-    it "on sell date" do
-      gilded_rose = GildedRose.new(name: "Backstage passes to a TAFKAL80ETC concert", days_remaining: 0, quality: 10)
-
-      gilded_rose.tick
-
-      expect(gilded_rose).to have_attributes(days_remaining: -1, quality: 0)
-    end
-
-    it "after sell date" do
-      gilded_rose = GildedRose.new(name: "Backstage passes to a TAFKAL80ETC concert", days_remaining: -10, quality: 10)
-
-      gilded_rose.tick
-
-      expect(gilded_rose).to have_attributes(days_remaining: -11, quality: 0)
+      it 'decrements the days remaining' do
+        expect { subject.tick }.to change { subject.days_remaining }.by(-1)
+      end
+      it 'does not update the quality' do
+        expect { subject.tick }.not_to change { subject.quality }
+      end
     end
   end
 
-  context "Conjured Mana" do
-    xit "before sell date" do
-      gilded_rose = GildedRose.new(name: "Conjured Mana Cake", days_remaining: 5, quality: 10)
+  context 'with Sulfuras' do
+    context 'when earlier than the sell date' do
+      subject do
+        described_class.new(name: 'Sulfuras, Hand of Ragnaros', days_remaining: 5, quality: 80)
+      end
 
-      gilded_rose.tick
-
-      expect(gilded_rose).to have_attributes(days_remaining: 4, quality: 8)
+      it 'does not change the days_remaining' do
+        expect { subject.tick }.not_to change { subject.days_remaining }
+      end
+      it 'does not change the quality' do
+        expect { subject.tick }.not_to change { subject.quality }
+      end
     end
 
-    xit "before sell date at zero quality" do
-      gilded_rose = GildedRose.new(name: "Conjured Mana Cake", days_remaining: 5, quality: 0)
+    context 'when on the sell date' do
+      subject do
+        described_class.new(name: 'Sulfuras, Hand of Ragnaros', days_remaining: 0, quality: 80)
+      end
 
-      gilded_rose.tick
-
-      expect(gilded_rose).to have_attributes(days_remaining: 4, quality: 0)
+      it 'does not change the days_remaining' do
+        expect { subject.tick }.not_to change { subject.days_remaining }
+      end
+      it 'does not change the quality' do
+        expect { subject.tick }.not_to change { subject.quality }
+      end
     end
 
-    xit "on sell date" do
-      gilded_rose = GildedRose.new(name: "Conjured Mana Cake", days_remaining: 0, quality: 10)
+    context 'when later than the sell date' do
+      subject do
+        described_class.new(name: 'Sulfuras, Hand of Ragnaros', days_remaining: -10, quality: 80)
+      end
 
-      gilded_rose.tick
+      it 'does not change the days_remaining' do
+        expect { subject.tick }.not_to change { subject.days_remaining }
+      end
+      it 'does not change the quality' do
+        expect { subject.tick }.not_to change { subject.quality }
+      end
+    end
+  end
 
-      expect(gilded_rose).to have_attributes(days_remaining: -1, quality: 6)
+  context 'with Backstage Pass' do
+    context 'when much earlier than the sell date' do
+      subject do
+        described_class.new(name: 'Backstage passes to a TAFKAL80ETC concert', days_remaining: 11, quality: 10)
+      end
+
+      it 'decrements the days remaining' do
+        expect { subject.tick }.to change { subject.days_remaining }.by(-1)
+      end
+      it 'increments the quality' do
+        expect { subject.tick }.to change { subject.quality }.by(1)
+      end
     end
 
-    xit "on sell date at zero quality" do
-      gilded_rose = GildedRose.new(name: "Conjured Mana Cake", days_remaining: 0, quality: 0)
+    context 'when much earlier than the sell date at max quality' do
+      subject do
+        described_class.new(name: 'Backstage passes to a TAFKAL80ETC concert', days_remaining: 11, quality: 50)
+      end
 
-      gilded_rose.tick
-
-      expect(gilded_rose).to have_attributes(days_remaining: -1, quality: 0)
+      it 'decrements the days remaining' do
+        expect { subject.tick }.to change { subject.days_remaining }.by(-1)
+      end
+      it 'does not update the quality' do
+        expect { subject.tick }.not_to change { subject.quality }
+      end
     end
 
-    xit "after sell date" do
-      gilded_rose = GildedRose.new(name: "Conjured Mana Cake", days_remaining: -10, quality: 10)
+    context 'when somewhat close to the sell date upper bound' do
+      subject do
+        described_class.new(name: 'Backstage passes to a TAFKAL80ETC concert', days_remaining: 10, quality: 10)
+      end
 
-      gilded_rose.tick
-
-      expect(gilded_rose).to have_attributes(days_remaining: -11, quality: 6)
+      it 'decrements the days remaining' do
+        expect { subject.tick }.to change { subject.days_remaining }.by(-1)
+      end
+      it 'increases the quality by 2' do
+        expect { subject.tick }.to change { subject.quality }.by(2)
+      end
     end
 
-    xit "after sell date at zero quality" do
-      gilded_rose = GildedRose.new(name: "Conjured Mana Cake", days_remaining: -10, quality: 0)
+    context 'when somewhat close to the sell date upper bound at max quality' do
+      subject do
+        described_class.new(name: 'Backstage passes to a TAFKAL80ETC concert', days_remaining: 10, quality: 50)
+      end
 
-      gilded_rose.tick
+      it 'decrements the days remaining' do
+        expect { subject.tick }.to change { subject.days_remaining }.by(-1)
+      end
+      it 'does not update the quality' do
+        expect { subject.tick }.not_to change { subject.quality }
+      end
+    end
 
-      expect(gilded_rose).to have_attributes(days_remaining: -11, quality: 0)
+    context 'when somewhat close to the sell date lower bound' do
+      subject do
+        described_class.new(name: 'Backstage passes to a TAFKAL80ETC concert', days_remaining: 6, quality: 10)
+      end
+
+      it 'decrements the days remaining' do
+        expect { subject.tick }.to change { subject.days_remaining }.by(-1)
+      end
+      it 'increases the quality by 2' do
+        expect { subject.tick }.to change { subject.quality }.by(2)
+      end
+    end
+
+    context 'when somewhat close to the sell date lower bound at max quality' do
+      subject do
+        described_class.new(name: 'Backstage passes to a TAFKAL80ETC concert', days_remaining: 6, quality: 50)
+      end
+
+      it 'decrements the days remaining' do
+        expect { subject.tick }.to change { subject.days_remaining }.by(-1)
+      end
+      it 'does not update the quality' do
+        expect { subject.tick }.not_to change { subject.quality }
+      end
+    end
+
+    context 'when very close to the sell date upper bound' do
+      subject do
+        described_class.new(name: 'Backstage passes to a TAFKAL80ETC concert', days_remaining: 5, quality: 10)
+      end
+
+      it 'decrements the days remaining' do
+        expect { subject.tick }.to change { subject.days_remaining }.by(-1)
+      end
+      it 'increases the quality by 3' do
+        expect { subject.tick }.to change { subject.quality }.by(3)
+      end
+    end
+
+    context 'when very close to the sell date upper bound at max quality' do
+      subject do
+        described_class.new(name: 'Backstage passes to a TAFKAL80ETC concert', days_remaining: 5, quality: 50)
+      end
+
+      it 'decrements the days remaining' do
+        expect { subject.tick }.to change { subject.days_remaining }.by(-1)
+      end
+      it 'does not update the quality' do
+        expect { subject.tick }.not_to change { subject.quality }
+      end
+    end
+
+    context 'when very close to the sell date lower bound' do
+      subject do
+        described_class.new(name: 'Backstage passes to a TAFKAL80ETC concert', days_remaining: 1, quality: 10)
+      end
+
+      it 'decrements the days remaining' do
+        expect { subject.tick }.to change { subject.days_remaining }.by(-1)
+      end
+      it 'increases the quality by 3' do
+        expect { subject.tick }.to change { subject.quality }.by(3)
+      end
+    end
+
+    context 'when very close to the sell date lower bound at max quality' do
+      subject do
+        described_class.new(name: 'Backstage passes to a TAFKAL80ETC concert', days_remaining: 1, quality: 50)
+      end
+
+      it 'decrements the days remaining' do
+        expect { subject.tick }.to change { subject.days_remaining }.by(-1)
+      end
+      it 'does not update the quality' do
+        expect { subject.tick }.not_to change { subject.quality }
+      end
+    end
+
+    context 'when on the sell date' do
+      subject do
+        described_class.new(name: 'Backstage passes to a TAFKAL80ETC concert', days_remaining: 0, quality: 10)
+      end
+
+      it 'decrements the days remaining' do
+        expect { subject.tick }.to change { subject.days_remaining }.by(-1)
+      end
+      it 'sets the quality to 0' do
+        expect { subject.tick }.to change { subject.quality }.to(0)
+      end
+    end
+
+    context 'when later than the sell date' do
+      subject do
+        described_class.new(name: 'Backstage passes to a TAFKAL80ETC concert', days_remaining: -10, quality: 10)
+      end
+
+      it 'decrements the days remaining' do
+        expect { subject.tick }.to change { subject.days_remaining }.by(-1)
+      end
+      it 'sets the quality to 0' do
+        expect { subject.tick }.to change { subject.quality }.to(0)
+      end
+    end
+  end
+
+  context 'with Conjured Mana' do
+    context 'when earlier than the sell date' do
+      subject do
+        described_class.new(name: 'Conjured Mana Cake', days_remaining: 5, quality: 10)
+      end
+
+      xit 'decrements the days remaining' do
+        expect { subject.tick }.to change { subject.days_remaining }.by(-1)
+      end
+      xit 'decreases the quality by 2' do
+        expect { subject.tick }.to change { subject.quality }.by(-2)
+      end
+    end
+
+    context 'when earlier than the sell date at 0 quality' do
+      subject do
+        described_class.new(name: 'Conjured Mana Cake', days_remaining: 5, quality: 0)
+      end
+
+      xit 'decrements the days remaining' do
+        expect { subject.tick }.to change { subject.days_remaining }.by(-1)
+      end
+      xit 'does not change the quality' do
+        expect { subject.tick }.not_to change { subject.quality }
+      end
+    end
+
+    context 'when on the sell date' do
+      subject do
+        described_class.new(name: 'Conjured Mana Cake', days_remaining: 0, quality: 10)
+      end
+
+      xit 'decrements the days remaining' do
+        expect { subject.tick }.to change { subject.days_remaining }.by(-1)
+      end
+      xit 'decreases the quality by 4' do
+        expect { subject.tick }.to change { subject.quality }.by(-4)
+      end
+    end
+
+    context 'when on the sell date at 0 quality' do
+      subject do
+        described_class.new(name: 'Conjured Mana Cake', days_remaining: 0, quality: 0)
+      end
+
+      xit 'decrements the days remaining' do
+        expect { subject.tick }.to change { subject.days_remaining }.by(-1)
+      end
+      xit 'does not change the quality' do
+        expect { subject.tick }.not_to change { subject.quality }
+      end
+    end
+
+    context 'when later than the sell date' do
+      subject do
+        described_class.new(name: 'Conjured Mana Cake', days_remaining: -10, quality: 10)
+      end
+
+      xit 'decrements the days remaining' do
+        expect { subject.tick }.to change { subject.days_remaining }.by(-1)
+      end
+      xit 'decreases the quality by 4' do
+        expect { subject.tick }.to change { subject.quality }.by(-4)
+      end
+    end
+
+    context 'when later than the sell date at 0 quality' do
+      subject do
+        described_class.new(name: 'Conjured Mana Cake', days_remaining: -10, quality: 0)
+      end
+
+      xit 'decrements the days remaining' do
+        expect { subject.tick }.to change { subject.days_remaining }.by(-1)
+      end
+      xit 'does not change the quality' do
+        expect { subject.tick }.not_to change { subject.quality }
+      end
     end
   end
 end
