@@ -125,6 +125,10 @@ Style/ZeroLengthPredicate:
   Enabled: true
 
 # Specific for Gilded Rose
+Style/BisectedAttrAccessor:
+  Enabled: false
+Style/HashSyntax:
+  Enabled: false
 Style/IfUnlessModifier:
   Enabled: false
 Style/GuardClause:
