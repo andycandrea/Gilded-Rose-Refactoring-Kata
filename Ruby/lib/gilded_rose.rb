@@ -13,10 +13,6 @@ class GildedRose
   # rubocop:disable Metrics/PerceivedComplexity,Metrics/MethodLength
   # rubocop:disable Metrics/CyclomaticComplexity,Metrics/AbcSize
   def tick
-    if @name != 'Sulfuras, Hand of Ragnaros'
-      @days_remaining -= 1
-    end
-
     if @name != 'Aged Brie' && @name != 'Backstage passes to a TAFKAL80ETC concert'
       if @quality > 0 && @name != 'Sulfuras, Hand of Ragnaros'
         @quality -= 1
@@ -33,6 +29,10 @@ class GildedRose
           @quality += 1
         end
       end
+    end
+
+    if @name != 'Sulfuras, Hand of Ragnaros'
+      @days_remaining -= 1
     end
 
     if @days_remaining < 0
