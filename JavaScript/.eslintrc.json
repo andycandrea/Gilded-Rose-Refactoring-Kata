@@ -1,0 +1,22 @@
+{
+  "root": true,
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "env": {
+    "jest/globals": true
+  },
+  "extends": "airbnb-base",
+  "plugins": ["jest"],
+  "rules": {
+    "comma-dangle": ["error", "never"],
+    "class-methods-use-this": "off",
+    "function-paren-newline": ["error", "consistent"],
+    "no-param-reassign": "warn",
+    "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+    "no-underscore-dangle": "off",
+    "no-unused-vars": [2, {"args": "all", "argsIgnorePattern": "^_"}],
+    "prefer-destructuring": "off"
+  }
+}
