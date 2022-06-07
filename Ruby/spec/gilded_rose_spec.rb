@@ -8,7 +8,7 @@ RSpec.describe GildedRose do
   context 'with Normal Item' do
     context 'when earlier than the sell date' do
       subject do
-        described_class.new(name: 'Normal Item', days_remaining: 5, quality: 10)
+        described_class.build(name: 'Normal Item', days_remaining: 5, quality: 10)
       end
 
       it 'decrements the days remaining' do
@@ -21,7 +21,7 @@ RSpec.describe GildedRose do
 
     context 'when on the sell date' do
       subject do
-        described_class.new(name: 'Normal Item', days_remaining: 0, quality: 10)
+        described_class.build(name: 'Normal Item', days_remaining: 0, quality: 10)
       end
 
       it 'decrements the days remaining' do
@@ -34,7 +34,7 @@ RSpec.describe GildedRose do
 
     context 'when later than the sell date' do
       subject do
-        described_class.new(name: 'Normal Item', days_remaining: -10, quality: 10)
+        described_class.build(name: 'Normal Item', days_remaining: -10, quality: 10)
       end
 
       it 'decrements the days remaining' do
@@ -47,7 +47,7 @@ RSpec.describe GildedRose do
 
     context 'when quality is 0' do
       subject do
-        described_class.new(name: 'Normal Item', days_remaining: 5, quality: 0)
+        described_class.build(name: 'Normal Item', days_remaining: 5, quality: 0)
       end
 
       it 'decrements the days remaining' do
@@ -62,7 +62,7 @@ RSpec.describe GildedRose do
   context 'with Aged Brie' do
     context 'when earlier than the sell date' do
       subject do
-        described_class.new(name: 'Aged Brie', days_remaining: 5, quality: 10)
+        described_class.build(name: 'Aged Brie', days_remaining: 5, quality: 10)
       end
 
       it 'decrements the days remaining' do
@@ -75,7 +75,7 @@ RSpec.describe GildedRose do
 
     context 'when the quality is at the maximum' do
       subject do
-        described_class.new(name: 'Aged Brie', days_remaining: 5, quality: 50)
+        described_class.build(name: 'Aged Brie', days_remaining: 5, quality: 50)
       end
 
       it 'decrements the days remaining' do
@@ -88,7 +88,7 @@ RSpec.describe GildedRose do
 
     context 'when on the sell date' do
       subject do
-        described_class.new(name: 'Aged Brie', days_remaining: 0, quality: 10)
+        described_class.build(name: 'Aged Brie', days_remaining: 0, quality: 10)
       end
 
       it 'decrements the days remaining' do
@@ -101,7 +101,7 @@ RSpec.describe GildedRose do
 
     context 'when on the sell date near max quality' do
       subject do
-        described_class.new(name: 'Aged Brie', days_remaining: 0, quality: 49)
+        described_class.build(name: 'Aged Brie', days_remaining: 0, quality: 49)
       end
 
       it 'decrements the days remaining' do
@@ -114,7 +114,7 @@ RSpec.describe GildedRose do
 
     context 'when on the sell date with maximum quality' do
       subject do
-        described_class.new(name: 'Aged Brie', days_remaining: 0, quality: 50)
+        described_class.build(name: 'Aged Brie', days_remaining: 0, quality: 50)
       end
 
       it 'decrements the days remaining' do
@@ -127,7 +127,7 @@ RSpec.describe GildedRose do
 
     context 'when later than the sell date' do
       subject do
-        described_class.new(name: 'Aged Brie', days_remaining: -10, quality: 10)
+        described_class.build(name: 'Aged Brie', days_remaining: -10, quality: 10)
       end
 
       it 'decrements the days remaining' do
@@ -140,7 +140,7 @@ RSpec.describe GildedRose do
 
     context 'when later than the sell date with maximum quality' do
       subject do
-        described_class.new(name: 'Aged Brie', days_remaining: -10, quality: 50)
+        described_class.build(name: 'Aged Brie', days_remaining: -10, quality: 50)
       end
 
       it 'decrements the days remaining' do
@@ -155,7 +155,7 @@ RSpec.describe GildedRose do
   context 'with Sulfuras' do
     context 'when earlier than the sell date' do
       subject do
-        described_class.new(name: 'Sulfuras, Hand of Ragnaros', days_remaining: 5, quality: 80)
+        described_class.build(name: 'Sulfuras, Hand of Ragnaros', days_remaining: 5, quality: 80)
       end
 
       it 'does not change the days_remaining' do
@@ -168,7 +168,7 @@ RSpec.describe GildedRose do
 
     context 'when on the sell date' do
       subject do
-        described_class.new(name: 'Sulfuras, Hand of Ragnaros', days_remaining: 0, quality: 80)
+        described_class.build(name: 'Sulfuras, Hand of Ragnaros', days_remaining: 0, quality: 80)
       end
 
       it 'does not change the days_remaining' do
@@ -181,7 +181,7 @@ RSpec.describe GildedRose do
 
     context 'when later than the sell date' do
       subject do
-        described_class.new(name: 'Sulfuras, Hand of Ragnaros', days_remaining: -10, quality: 80)
+        described_class.build(name: 'Sulfuras, Hand of Ragnaros', days_remaining: -10, quality: 80)
       end
 
       it 'does not change the days_remaining' do
@@ -196,7 +196,7 @@ RSpec.describe GildedRose do
   context 'with Backstage Pass' do
     context 'when much earlier than the sell date' do
       subject do
-        described_class.new(name: 'Backstage passes to a TAFKAL80ETC concert', days_remaining: 11, quality: 10)
+        described_class.build(name: 'Backstage passes to a TAFKAL80ETC concert', days_remaining: 11, quality: 10)
       end
 
       it 'decrements the days remaining' do
@@ -209,7 +209,7 @@ RSpec.describe GildedRose do
 
     context 'when much earlier than the sell date at max quality' do
       subject do
-        described_class.new(name: 'Backstage passes to a TAFKAL80ETC concert', days_remaining: 11, quality: 50)
+        described_class.build(name: 'Backstage passes to a TAFKAL80ETC concert', days_remaining: 11, quality: 50)
       end
 
       it 'decrements the days remaining' do
@@ -222,7 +222,7 @@ RSpec.describe GildedRose do
 
     context 'when somewhat close to the sell date upper bound' do
       subject do
-        described_class.new(name: 'Backstage passes to a TAFKAL80ETC concert', days_remaining: 10, quality: 10)
+        described_class.build(name: 'Backstage passes to a TAFKAL80ETC concert', days_remaining: 10, quality: 10)
       end
 
       it 'decrements the days remaining' do
@@ -235,7 +235,7 @@ RSpec.describe GildedRose do
 
     context 'when somewhat close to the sell date upper bound at max quality' do
       subject do
-        described_class.new(name: 'Backstage passes to a TAFKAL80ETC concert', days_remaining: 10, quality: 50)
+        described_class.build(name: 'Backstage passes to a TAFKAL80ETC concert', days_remaining: 10, quality: 50)
       end
 
       it 'decrements the days remaining' do
@@ -248,7 +248,7 @@ RSpec.describe GildedRose do
 
     context 'when somewhat close to the sell date lower bound' do
       subject do
-        described_class.new(name: 'Backstage passes to a TAFKAL80ETC concert', days_remaining: 6, quality: 10)
+        described_class.build(name: 'Backstage passes to a TAFKAL80ETC concert', days_remaining: 6, quality: 10)
       end
 
       it 'decrements the days remaining' do
@@ -261,7 +261,7 @@ RSpec.describe GildedRose do
 
     context 'when somewhat close to the sell date lower bound at max quality' do
       subject do
-        described_class.new(name: 'Backstage passes to a TAFKAL80ETC concert', days_remaining: 6, quality: 50)
+        described_class.build(name: 'Backstage passes to a TAFKAL80ETC concert', days_remaining: 6, quality: 50)
       end
 
       it 'decrements the days remaining' do
@@ -274,7 +274,7 @@ RSpec.describe GildedRose do
 
     context 'when very close to the sell date upper bound' do
       subject do
-        described_class.new(name: 'Backstage passes to a TAFKAL80ETC concert', days_remaining: 5, quality: 10)
+        described_class.build(name: 'Backstage passes to a TAFKAL80ETC concert', days_remaining: 5, quality: 10)
       end
 
       it 'decrements the days remaining' do
@@ -287,7 +287,7 @@ RSpec.describe GildedRose do
 
     context 'when very close to the sell date upper bound at max quality' do
       subject do
-        described_class.new(name: 'Backstage passes to a TAFKAL80ETC concert', days_remaining: 5, quality: 50)
+        described_class.build(name: 'Backstage passes to a TAFKAL80ETC concert', days_remaining: 5, quality: 50)
       end
 
       it 'decrements the days remaining' do
@@ -300,7 +300,7 @@ RSpec.describe GildedRose do
 
     context 'when very close to the sell date lower bound' do
       subject do
-        described_class.new(name: 'Backstage passes to a TAFKAL80ETC concert', days_remaining: 1, quality: 10)
+        described_class.build(name: 'Backstage passes to a TAFKAL80ETC concert', days_remaining: 1, quality: 10)
       end
 
       it 'decrements the days remaining' do
@@ -313,7 +313,7 @@ RSpec.describe GildedRose do
 
     context 'when very close to the sell date lower bound at max quality' do
       subject do
-        described_class.new(name: 'Backstage passes to a TAFKAL80ETC concert', days_remaining: 1, quality: 50)
+        described_class.build(name: 'Backstage passes to a TAFKAL80ETC concert', days_remaining: 1, quality: 50)
       end
 
       it 'decrements the days remaining' do
@@ -326,7 +326,7 @@ RSpec.describe GildedRose do
 
     context 'when on the sell date' do
       subject do
-        described_class.new(name: 'Backstage passes to a TAFKAL80ETC concert', days_remaining: 0, quality: 10)
+        described_class.build(name: 'Backstage passes to a TAFKAL80ETC concert', days_remaining: 0, quality: 10)
       end
 
       it 'decrements the days remaining' do
@@ -339,7 +339,7 @@ RSpec.describe GildedRose do
 
     context 'when later than the sell date' do
       subject do
-        described_class.new(name: 'Backstage passes to a TAFKAL80ETC concert', days_remaining: -10, quality: 10)
+        described_class.build(name: 'Backstage passes to a TAFKAL80ETC concert', days_remaining: -10, quality: 10)
       end
 
       it 'decrements the days remaining' do
@@ -354,7 +354,7 @@ RSpec.describe GildedRose do
   context 'with Conjured Mana' do
     context 'when earlier than the sell date' do
       subject do
-        described_class.new(name: 'Conjured Mana Cake', days_remaining: 5, quality: 10)
+        described_class.build(name: 'Conjured Mana Cake', days_remaining: 5, quality: 10)
       end
 
       xit 'decrements the days remaining' do
@@ -367,7 +367,7 @@ RSpec.describe GildedRose do
 
     context 'when earlier than the sell date at 0 quality' do
       subject do
-        described_class.new(name: 'Conjured Mana Cake', days_remaining: 5, quality: 0)
+        described_class.build(name: 'Conjured Mana Cake', days_remaining: 5, quality: 0)
       end
 
       xit 'decrements the days remaining' do
@@ -380,7 +380,7 @@ RSpec.describe GildedRose do
 
     context 'when on the sell date' do
       subject do
-        described_class.new(name: 'Conjured Mana Cake', days_remaining: 0, quality: 10)
+        described_class.build(name: 'Conjured Mana Cake', days_remaining: 0, quality: 10)
       end
 
       xit 'decrements the days remaining' do
@@ -393,7 +393,7 @@ RSpec.describe GildedRose do
 
     context 'when on the sell date at 0 quality' do
       subject do
-        described_class.new(name: 'Conjured Mana Cake', days_remaining: 0, quality: 0)
+        described_class.build(name: 'Conjured Mana Cake', days_remaining: 0, quality: 0)
       end
 
       xit 'decrements the days remaining' do
@@ -406,7 +406,7 @@ RSpec.describe GildedRose do
 
     context 'when later than the sell date' do
       subject do
-        described_class.new(name: 'Conjured Mana Cake', days_remaining: -10, quality: 10)
+        described_class.build(name: 'Conjured Mana Cake', days_remaining: -10, quality: 10)
       end
 
       xit 'decrements the days remaining' do
@@ -419,7 +419,7 @@ RSpec.describe GildedRose do
 
     context 'when later than the sell date at 0 quality' do
       subject do
-        described_class.new(name: 'Conjured Mana Cake', days_remaining: -10, quality: 0)
+        described_class.build(name: 'Conjured Mana Cake', days_remaining: -10, quality: 0)
       end
 
       xit 'decrements the days remaining' do

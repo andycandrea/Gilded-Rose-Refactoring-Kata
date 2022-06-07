@@ -6,7 +6,7 @@ describe('GildedRose', () => {
   describe('with Normal Item', () => {
     describe('when earlier than the sell date', () => {
       it('decrements the days remaining', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Normal Item',
           daysRemaining: 5,
           quality: 10
@@ -16,7 +16,7 @@ describe('GildedRose', () => {
         expect(subject.daysRemaining).toBe(4);
       });
       it('decrements the quality', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Normal Item',
           daysRemaining: 5,
           quality: 10
@@ -29,7 +29,7 @@ describe('GildedRose', () => {
 
     describe('when on the sell date', () => {
       it('decrements the days remaining', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Normal Item',
           daysRemaining: 0,
           quality: 10
@@ -39,7 +39,7 @@ describe('GildedRose', () => {
         expect(subject.daysRemaining).toBe(-1);
       });
       it('decreases the quality by 2', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Normal Item',
           daysRemaining: 0,
           quality: 10
@@ -52,7 +52,7 @@ describe('GildedRose', () => {
 
     describe('when later than the sell date', () => {
       it('decrements the days remaining', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Normal Item',
           daysRemaining: -10,
           quality: 10
@@ -62,7 +62,7 @@ describe('GildedRose', () => {
         expect(subject.daysRemaining).toBe(-11);
       });
       it('decreases the quality by 2', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Normal Item',
           daysRemaining: -10,
           quality: 10
@@ -75,7 +75,7 @@ describe('GildedRose', () => {
 
     describe('when quality is 0', () => {
       it('decrements the days remaining', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Normal Item',
           daysRemaining: 5,
           quality: 0
@@ -85,7 +85,7 @@ describe('GildedRose', () => {
         expect(subject.daysRemaining).toBe(4);
       });
       it('does not update the quality', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Normal Item',
           daysRemaining: 5,
           quality: 0
@@ -100,7 +100,7 @@ describe('GildedRose', () => {
   describe('with Aged Brie', () => {
     describe('when earlier than the sell date', () => {
       it('decrements the days remaining', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Aged Brie',
           daysRemaining: 5,
           quality: 10
@@ -110,7 +110,7 @@ describe('GildedRose', () => {
         expect(subject.daysRemaining).toBe(4);
       });
       it('increments the quality', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Aged Brie',
           daysRemaining: 5,
           quality: 10
@@ -123,7 +123,7 @@ describe('GildedRose', () => {
 
     describe('when the quality is at the maximum', () => {
       it('decrements the days remaining', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Aged Brie',
           daysRemaining: 5,
           quality: 50
@@ -133,7 +133,7 @@ describe('GildedRose', () => {
         expect(subject.daysRemaining).toBe(4);
       });
       it('does not update the quality', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Aged Brie',
           daysRemaining: 5,
           quality: 50
@@ -146,7 +146,7 @@ describe('GildedRose', () => {
 
     describe('when on the sell date', () => {
       it('decrements the days remaining', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Aged Brie',
           daysRemaining: 0,
           quality: 10
@@ -156,7 +156,7 @@ describe('GildedRose', () => {
         expect(subject.daysRemaining).toBe(-1);
       });
       it('increases the quality by 2', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Aged Brie',
           daysRemaining: 0,
           quality: 10
@@ -169,7 +169,7 @@ describe('GildedRose', () => {
 
     describe('when on the sell date near max quality', () => {
       it('decrements the days remaining', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Aged Brie',
           daysRemaining: 0,
           quality: 49
@@ -179,7 +179,7 @@ describe('GildedRose', () => {
         expect(subject.daysRemaining).toBe(-1);
       });
       it('increments the quality', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Aged Brie',
           daysRemaining: 0,
           quality: 49
@@ -192,7 +192,7 @@ describe('GildedRose', () => {
 
     describe('when on the sell date with maximum quality', () => {
       it('decrements the days remaining', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Aged Brie',
           daysRemaining: 0,
           quality: 50
@@ -202,7 +202,7 @@ describe('GildedRose', () => {
         expect(subject.daysRemaining).toBe(-1);
       });
       it('does not update the quality', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Aged Brie',
           daysRemaining: 0,
           quality: 50
@@ -215,7 +215,7 @@ describe('GildedRose', () => {
 
     describe('when later than the sell date', () => {
       it('decrements the days remaining', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Aged Brie',
           daysRemaining: -10,
           quality: 10
@@ -225,7 +225,7 @@ describe('GildedRose', () => {
         expect(subject.daysRemaining).toBe(-11);
       });
       it('increases the quality by 2', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Aged Brie',
           daysRemaining: -10,
           quality: 10
@@ -238,7 +238,7 @@ describe('GildedRose', () => {
 
     describe('when later than the sell date with maximum quality', () => {
       it('decrements the days remaining', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Aged Brie',
           daysRemaining: -10,
           quality: 50
@@ -248,7 +248,7 @@ describe('GildedRose', () => {
         expect(subject.daysRemaining).toBe(-11);
       });
       it('does not update the quality', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Aged Brie',
           daysRemaining: -10,
           quality: 50
@@ -263,7 +263,7 @@ describe('GildedRose', () => {
   describe('with Sulfuras', () => {
     describe('when earlier than the sell date', () => {
       it('does not change the days remaining', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Sulfuras, Hand of Ragnaros',
           daysRemaining: 5,
           quality: 80
@@ -273,7 +273,7 @@ describe('GildedRose', () => {
         expect(subject.daysRemaining).toBe(5);
       });
       it('does not change the quality', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Sulfuras, Hand of Ragnaros',
           daysRemaining: 5,
           quality: 80
@@ -286,7 +286,7 @@ describe('GildedRose', () => {
 
     describe('when on the sell date', () => {
       it('does not change the days remaining', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Sulfuras, Hand of Ragnaros',
           daysRemaining: 0,
           quality: 80
@@ -296,7 +296,7 @@ describe('GildedRose', () => {
         expect(subject.daysRemaining).toBe(0);
       });
       it('does not change the quality', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Sulfuras, Hand of Ragnaros',
           daysRemaining: 0,
           quality: 80
@@ -309,7 +309,7 @@ describe('GildedRose', () => {
 
     describe('when later than the sell date', () => {
       it('does not change the days remaining', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Sulfuras, Hand of Ragnaros',
           daysRemaining: -10,
           quality: 80
@@ -319,7 +319,7 @@ describe('GildedRose', () => {
         expect(subject.daysRemaining).toBe(-10);
       });
       it('does not change the quality', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Sulfuras, Hand of Ragnaros',
           daysRemaining: -10,
           quality: 80
@@ -334,7 +334,7 @@ describe('GildedRose', () => {
   describe('with Backstage Pass', () => {
     describe('when much earlier than the sell date', () => {
       it('decrements the days remaining', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Backstage passes to a TAFKAL80ETC concert',
           daysRemaining: 11,
           quality: 10
@@ -344,7 +344,7 @@ describe('GildedRose', () => {
         expect(subject.daysRemaining).toBe(10);
       });
       it('increments the quality', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Backstage passes to a TAFKAL80ETC concert',
           daysRemaining: 11,
           quality: 10
@@ -357,7 +357,7 @@ describe('GildedRose', () => {
 
     describe('when much earlier than the sell date at max quality', () => {
       it('decrements the days remaining', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Backstage passes to a TAFKAL80ETC concert',
           daysRemaining: 11,
           quality: 50
@@ -367,7 +367,7 @@ describe('GildedRose', () => {
         expect(subject.daysRemaining).toBe(10);
       });
       it('does not update the quality', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Backstage passes to a TAFKAL80ETC concert',
           daysRemaining: 11,
           quality: 50
@@ -380,7 +380,7 @@ describe('GildedRose', () => {
 
     describe('when somewhat close to the sell date upper bound', () => {
       it('decrements the days remaining', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Backstage passes to a TAFKAL80ETC concert',
           daysRemaining: 10,
           quality: 10
@@ -390,7 +390,7 @@ describe('GildedRose', () => {
         expect(subject.daysRemaining).toBe(9);
       });
       it('increases the quality by 2', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Backstage passes to a TAFKAL80ETC concert',
           daysRemaining: 10,
           quality: 10
@@ -403,7 +403,7 @@ describe('GildedRose', () => {
 
     describe('when somewhat close to the sell date upper bound at max quality', () => {
       it('decrements the days remaining', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Backstage passes to a TAFKAL80ETC concert',
           daysRemaining: 10,
           quality: 50
@@ -413,7 +413,7 @@ describe('GildedRose', () => {
         expect(subject.daysRemaining).toBe(9);
       });
       it('does not update the quality', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Backstage passes to a TAFKAL80ETC concert',
           daysRemaining: 10,
           quality: 50
@@ -426,7 +426,7 @@ describe('GildedRose', () => {
 
     describe('when somewhat close to the sell date lower bound', () => {
       it('decrements the days remaining', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Backstage passes to a TAFKAL80ETC concert',
           daysRemaining: 6,
           quality: 10
@@ -436,7 +436,7 @@ describe('GildedRose', () => {
         expect(subject.daysRemaining).toBe(5);
       });
       it('increases the quality by 2', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Backstage passes to a TAFKAL80ETC concert',
           daysRemaining: 6,
           quality: 10
@@ -449,7 +449,7 @@ describe('GildedRose', () => {
 
     describe('when somewhat close to the sell date lower bound at max quality', () => {
       it('decrements the days remaining', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Backstage passes to a TAFKAL80ETC concert',
           daysRemaining: 6,
           quality: 50
@@ -459,7 +459,7 @@ describe('GildedRose', () => {
         expect(subject.daysRemaining).toBe(5);
       });
       it('does not update the quality', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Backstage passes to a TAFKAL80ETC concert',
           daysRemaining: 6,
           quality: 50
@@ -472,7 +472,7 @@ describe('GildedRose', () => {
 
     describe('when very close to the sell date upper bound', () => {
       it('decrements the days remaining', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Backstage passes to a TAFKAL80ETC concert',
           daysRemaining: 5,
           quality: 10
@@ -482,7 +482,7 @@ describe('GildedRose', () => {
         expect(subject.daysRemaining).toBe(4);
       });
       it('increases the quality by 3', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Backstage passes to a TAFKAL80ETC concert',
           daysRemaining: 5,
           quality: 10
@@ -495,7 +495,7 @@ describe('GildedRose', () => {
 
     describe('when very close to the sell date upper bound at max quality', () => {
       it('decrements the days remaining', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Backstage passes to a TAFKAL80ETC concert',
           daysRemaining: 5,
           quality: 50
@@ -505,7 +505,7 @@ describe('GildedRose', () => {
         expect(subject.daysRemaining).toBe(4);
       });
       it('does not update the quality', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Backstage passes to a TAFKAL80ETC concert',
           daysRemaining: 5,
           quality: 50
@@ -518,7 +518,7 @@ describe('GildedRose', () => {
 
     describe('when very close to the sell date lower bound', () => {
       it('decrements the days remaining', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Backstage passes to a TAFKAL80ETC concert',
           daysRemaining: 1,
           quality: 10
@@ -528,7 +528,7 @@ describe('GildedRose', () => {
         expect(subject.daysRemaining).toBe(0);
       });
       it('increases the quality by 3', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Backstage passes to a TAFKAL80ETC concert',
           daysRemaining: 1,
           quality: 10
@@ -541,7 +541,7 @@ describe('GildedRose', () => {
 
     describe('when very close to the sell date lower bound at max quality', () => {
       it('decrements the days remaining', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Backstage passes to a TAFKAL80ETC concert',
           daysRemaining: 1,
           quality: 50
@@ -551,7 +551,7 @@ describe('GildedRose', () => {
         expect(subject.daysRemaining).toBe(0);
       });
       it('does not update the quality', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Backstage passes to a TAFKAL80ETC concert',
           daysRemaining: 1,
           quality: 50
@@ -564,7 +564,7 @@ describe('GildedRose', () => {
 
     describe('when on the sell date', () => {
       it('decrements the days remaining', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Backstage passes to a TAFKAL80ETC concert',
           daysRemaining: 0,
           quality: 10
@@ -574,7 +574,7 @@ describe('GildedRose', () => {
         expect(subject.daysRemaining).toBe(-1);
       });
       it('sets the quality to 0', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Backstage passes to a TAFKAL80ETC concert',
           daysRemaining: 0,
           quality: 10
@@ -587,7 +587,7 @@ describe('GildedRose', () => {
 
     describe('when later than the sell date', () => {
       it('decrements the days remaining', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Backstage passes to a TAFKAL80ETC concert',
           daysRemaining: -10,
           quality: 10
@@ -597,7 +597,7 @@ describe('GildedRose', () => {
         expect(subject.daysRemaining).toBe(-11);
       });
       it('sets the quality to 0', () => {
-        const subject = new DescribedClass({
+        const subject = DescribedClass.build({
           name: 'Backstage passes to a TAFKAL80ETC concert',
           daysRemaining: -10,
           quality: 10
@@ -611,7 +611,7 @@ describe('GildedRose', () => {
 
   describe('with Conjured Mana', () => {
     describe('when earlier than the sell date', () => {
-      const subject = new DescribedClass({
+      const subject = DescribedClass.build({
         name: 'Conjured Mana Cake',
         daysRemaining: 5,
         quality: 10
@@ -628,7 +628,7 @@ describe('GildedRose', () => {
     });
 
     describe('when earlier than the sell date at 0 quality', () => {
-      const subject = new DescribedClass({
+      const subject = DescribedClass.build({
         name: 'Conjured Mana Cake',
         daysRemaining: 5,
         quality: 0
@@ -645,7 +645,7 @@ describe('GildedRose', () => {
     });
 
     describe('when on the sell date', () => {
-      const subject = new DescribedClass({
+      const subject = DescribedClass.build({
         name: 'Conjured Mana Cake',
         daysRemaining: 0,
         quality: 10
@@ -662,7 +662,7 @@ describe('GildedRose', () => {
     });
 
     describe('when on the sell date at 0 quality', () => {
-      const subject = new DescribedClass({
+      const subject = DescribedClass.build({
         name: 'Conjured Mana Cake',
         daysRemaining: 0,
         quality: 0
@@ -679,7 +679,7 @@ describe('GildedRose', () => {
     });
 
     describe('when later than the sell date', () => {
-      const subject = new DescribedClass({
+      const subject = DescribedClass.build({
         name: 'Conjured Mana Cake',
         daysRemaining: -10,
         quality: 10
@@ -696,7 +696,7 @@ describe('GildedRose', () => {
     });
 
     describe('when later than the sell date at 0 quality', () => {
-      const subject = new DescribedClass({
+      const subject = DescribedClass.build({
         name: 'Conjured Mana Cake',
         daysRemaining: -10,
         quality: 0
